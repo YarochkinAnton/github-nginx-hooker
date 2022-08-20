@@ -99,8 +99,8 @@ impl AllowList {
                 Ok(cidr) => cidr,
                 Err(err) => {
                     log::error!(
-                        "Failed to parse CIDR [{}] at line {}, cause: {:#}, skipping rest of the \
-                         file",
+                        "Failed to parse CIDR [{}] at line {}, cause: {:#t p}, skipping rest of \
+                         the file",
                         line,
                         line_number,
                         err
@@ -195,6 +195,13 @@ fn try_fetch(authorization_header_value: &str) -> Result<HashSet<IpNetwork>, any
         .header(reqwest::header::AUTHORIZATION, authorization_header_value)
         .send()
         .with_context(|| anyhow!("Failed to fetch GitHub meta information"))?;
+
+    if !response.status().is_success() {
+        return Err(anyhow!(
+            "GitHub API responded with code {}",
+            response.status().as_u16()
+        ));
+    }
 
     let meta_info: MetaInfo = response
         .json()
