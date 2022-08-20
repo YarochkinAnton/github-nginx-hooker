@@ -37,7 +37,7 @@ struct Config {
     /// Path to file where Nginx allow list show be written
     pub allow_file:        String,
     /// Time interval in seconds between checks
-    pub repeat:            usize,
+    pub repeat:            u64,
     /// Command to execute after allow lsit change
     pub after_update_hook: String,
 }
@@ -179,7 +179,8 @@ fn main() -> Result<(), anyhow::Error> {
                 }
             }
             Err(err) => log::error!("Update cycle failed. {}", err),
-        }
+        };
+        std::thread::sleep(std::time::Duration::from_secs(config.repeat));
     }
 
     Ok(())
