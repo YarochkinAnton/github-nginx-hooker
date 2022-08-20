@@ -99,7 +99,7 @@ impl AllowList {
                 Ok(cidr) => cidr,
                 Err(err) => {
                     log::error!(
-                        "Failed to parse CIDR [{}] at line {}, cause: {}, skipping rest of the \
+                        "Failed to parse CIDR [{}] at line {}, cause: {:#}, skipping rest of the \
                          file",
                         line,
                         line_number,
@@ -178,7 +178,7 @@ fn main() -> Result<(), anyhow::Error> {
                     log::info!("Allow list is UNCHANGED");
                 }
             }
-            Err(err) => log::error!("Update cycle failed. {}", err),
+            Err(err) => log::error!("Update cycle failed. {:#}", err),
         };
         std::thread::sleep(std::time::Duration::from_secs(config.repeat));
     }
