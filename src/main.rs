@@ -154,6 +154,8 @@ enum AllowFileLoadError {
 fn main() -> Result<(), anyhow::Error> {
     let args = Args::parse();
 
+    env_logger::init();
+
     let config: Config = Config::read_from_file(&args.config)
         .with_context(|| anyhow!("Failed to read configuration"))?;
 
