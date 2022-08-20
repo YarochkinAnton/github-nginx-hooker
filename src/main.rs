@@ -193,13 +193,15 @@ fn try_fetch(authorization_header_value: &str) -> Result<HashSet<IpNetwork>, any
         .request(reqwest::Method::GET, GITHUB_API_META_URL)
         .header(reqwest::header::ACCEPT, ACCEPT_HEADER_VALUE)
         .header(reqwest::header::AUTHORIZATION, authorization_header_value)
+        .header(reqwest::header::USER_AGENT, "reqwest")
         .send()
         .with_context(|| anyhow!("Failed to fetch GitHub meta information"))?;
 
     if !response.status().is_success() {
         return Err(anyhow!(
-            "GitHub API responded with code {}",
-            response.status().as_u16()
+            "GitHub API responded with code {}, text: {}",
+            response.status().as_u16(),
+            response.text().unwrap_or_default()
         ));
     }
 
