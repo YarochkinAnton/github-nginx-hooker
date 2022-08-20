@@ -99,8 +99,8 @@ impl AllowList {
                 Ok(cidr) => cidr,
                 Err(err) => {
                     log::error!(
-                        "Failed to parse CIDR [{}] at line {}, cause: {:#t p}, skipping rest of \
-                         the file",
+                        "Failed to parse CIDR [{}] at line {}, cause: {:#}, skipping rest of the \
+                         file",
                         line,
                         line_number,
                         err
